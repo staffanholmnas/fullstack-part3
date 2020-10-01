@@ -40,10 +40,17 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+app.get('/info', (request, response) => {
+    const nameAmount = persons.length
+    const date = new Date()
+    response.send("Phonebook has info for " + nameAmount.toString() 
+    + " people" + "<br />" + date.toString())
+})
+
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
-    console.log("deleted" , person.name)
+    console.log("Deleted", person.name)
     persons = persons.filter(person => person.id !== id)
     response.status(204).end()
 })
@@ -68,7 +75,6 @@ app.post('/api/persons', (request, response) => {
         id: generateId(),
         name: body.name,
         number: body.number,
-        
     }
 
     persons = persons.concat(person)
