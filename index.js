@@ -43,8 +43,7 @@ app.get('/api/persons', (request, response) => {
 app.get('/info', (request, response) => {
     const nameAmount = persons.length
     const date = new Date()
-    response.send("Phonebook has info for " + nameAmount.toString() 
-    + " people" + "<br />" + date.toString())
+    response.send(`Phonebook has info for ${nameAmount} people <br /> ${date}`)
 })
 
 app.delete('/api/persons/:id', (request, response) => {
