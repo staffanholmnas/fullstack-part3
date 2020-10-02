@@ -2,10 +2,10 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 
-
-
 app.use(express.json())
-app.use(morgan('tiny'))
+
+morgan.token('body', (request, response) => JSON.stringify(request.body));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 let persons = [
     {
@@ -63,7 +63,6 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    console.log(body.name)
 
     if (!body.name) {
         return response.status(400).json({
@@ -95,3 +94,4 @@ app.post('/api/persons', (request, response) => {
 
 const PORT = 3001
 app.listen(PORT)
+console.log(`Server is running on port ${PORT}`)
