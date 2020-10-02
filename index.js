@@ -23,11 +23,6 @@ let persons = [
         id: 4,
         name: "Mary Poppendieck",
         number: "39-23-6423122"
-    },
-    {
-        id: 5,
-        name: "Jenny Warwick",
-        number: "855-424455"
     }
 ]
 
@@ -70,6 +65,18 @@ app.post('/api/persons', (request, response) => {
     if (!body.name) {
         return response.status(400).json({
             error: 'Oops! The name seems to be missing!'
+        })
+    }
+
+    if (!body.number) {
+        return response.status(400).json({
+            error: 'Oopsie daisy! The number is missing from your request!'
+        })
+    }
+
+    if (persons.map(person => person.name).includes(body.name)) {
+        return response.status(400).json({
+            error: 'Unoriginal! The name must be unique!'
         })
     }
 
