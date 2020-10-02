@@ -60,10 +60,8 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 const generateId = () => {
-    const maxId = persons.length > 0
-        ? Math.max(...persons.map(person => person.id))
-        : 0
-    return maxId + 1
+    const randomId = Math.floor(Math.random() * 100000000000)
+    return randomId
 }
 
 app.post('/api/persons', (request, response) => {
