@@ -37,13 +37,9 @@ let persons = [
 ]
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    Person.findById(request.params.id).then(person => {
+        response.json(person.toJSON())
+    })
 })
 
 app.get('/api/persons', (request, response) => {
@@ -72,35 +68,26 @@ const generateId = () => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if (!body.name) {
-        return response.status(400).json({
-            error: 'Oops! The name seems to be missing!!'
-        })
+    if (body.name === undefined) {
+        return response.status(400).json({ error: 'name missing' })
     }
 
-    if (!body.number) {
-        return response.status(400).json({
-            error: 'Oopsie daisy! The number is missing from your request!'
-        })
+    if (body.number === undefined) {
+        return response.status(400).json({ error: 'number missing' })
     }
 
-    if (persons.map(person => person.name).includes(body.name)) {
-        return response.status(400).json({
-            error: 'Unoriginal! The name must be unique!'
-        })
-    }
+    const person = new Person({
 
-    const person = {
-        id: generateId(),
         name: body.name,
         number: body.number,
-    }
+    })
 
-    persons = persons.concat(person)
-    response.json(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`)
 })
