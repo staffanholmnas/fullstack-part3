@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
+const Person = require('./models/person')
 
 app.use(express.json())
 app.use(cors())
@@ -9,6 +10,12 @@ app.use(express.static('build'))
 
 morgan.token('body', (request, response) => JSON.stringify(request.body));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
+
+// DO NOT SAVE YOUR PASSWORD TO GITHUB!!
+//   ''
+
+
+
 
 let persons = [
     {
@@ -44,7 +51,9 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({}).then(persons => {
+        response.json(persons.map(person => person.toJSON()))
+    })
 })
 
 app.get('/info', (request, response) => {
