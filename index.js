@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
@@ -10,11 +11,6 @@ app.use(express.static('build'))
 
 morgan.token('body', (request, response) => JSON.stringify(request.body));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
-
-// DO NOT SAVE YOUR PASSWORD TO GITHUB!!
-//   ''
-
-
 
 
 let persons = [
@@ -104,6 +100,7 @@ app.post('/api/persons', (request, response) => {
     response.json(person)
 })
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT)
-console.log(`Server is running on port ${PORT}`)
+const PORT = process.env.PORT
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
