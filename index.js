@@ -55,9 +55,12 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-    const nameAmount = persons.length
+    let count = 0
     const date = new Date()
-    response.send(`Phonebook has info for ${nameAmount} people <br /> ${date}`)
+    Person.find().exec(function (err, results) {
+        count = results.length
+        response.send(`Phonebook has info for ${count} people <br /> ${date}`)
+    });
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
