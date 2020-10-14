@@ -81,7 +81,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
     Person.findByIdAndUpdate(request.params.id, person, { new: true })
         .then(updatedPerson => {
-            response.json(updatedPerson)
+            response.json(updatedPerson.toJSON())
         })
         .catch(error => next(error))
 })
@@ -111,7 +111,7 @@ app.post('/api/persons', (request, response, next) => {
     person.save().then(savedPerson => {
         response.json(savedPerson.toJSON())
     })
-    .catch(error => next(error))
+        .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
@@ -120,8 +120,8 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).send({ error: 'malformatted id' })
     } else if (error.name === 'ValidationError') {
         return response.status(400).json({ error: error.message })
-      }
-    
+    }
+
     next(error)
 }
 app.use(errorHandler)
