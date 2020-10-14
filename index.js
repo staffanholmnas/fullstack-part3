@@ -46,7 +46,7 @@ app.get('/api/persons/:id', (request, response, next) => {
             }
         })
         .catch(error => next(error))
-})
+}) 
 
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
